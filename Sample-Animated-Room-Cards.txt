@@ -1,0 +1,696 @@
+## Reference: https://www.reddit.com/r/homeassistant/comments/lb13nu/wanted_to_share_the_animated_room_cards_i_made/
+
+## Requires:
+## paper button rows https://github.com/jcwillox/lovelace-paper-buttons-row
+## state switch card (with transition set to "flip") https://github.com/thomasloven/lovelace-state-switch
+## custom cards for styling https://github.com/custom-cards/button-card
+ 
+type: vertical-stack
+cards:
+  - type: entities
+    style: |
+     ha-card {
+        border-radius: 30px;
+        background: rgba(0,0,0,.3);
+        box-shadow: none;
+        }
+    entities:
+      - type: 'custom:paper-buttons-row'
+        buttons:
+          - entity: input_select.lighttoggle
+            name: false
+            icon: 'hass:sofa-single'
+            state_styles:
+              Boudoir:
+                button:
+                  background: 'rgba(255,255,255,.5)'
+                  box-shadow: '0 0 15px rgba(255,255,255,.6)'
+            style:
+              button:
+                - background: 'rgba(255,255,255,.1)'
+                - border-radius: 25px
+                - padding: 20px
+              icon:
+                - '--mdc-icon-size': 40px
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                entity_id: input_select.lighttoggle
+                option: Boudoir
+          - entity: input_select.lighttoggle
+            name: false
+            icon: 'hass:bed-king'
+            state_styles:
+              Bedroom:
+                button:
+                  background: 'rgba(255,255,255,.5)'
+                  box-shadow: '0 0 15px rgba(255,255,255,.6)'
+            style:
+              button:
+                - background: 'rgba(255,255,255,.1)'
+                - border-radius: 25px
+                - padding: 20px
+              icon:
+                - '--mdc-icon-size': 40px
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                entity_id: input_select.lighttoggle
+                option: Bedroom
+          - entity: input_select.lighttoggle
+            name: false
+            icon: 'hass:laptop'
+            state_styles:
+              Office:
+                button:
+                  background: 'rgba(255,255,255,.5)'
+                  box-shadow: '0 0 15px rgba(255,255,255,.6)'
+            style:
+              button:
+                - background: 'rgba(255,255,255,.1)'
+                - border-radius: 25px
+                - padding: 20px
+              icon:
+                - '--mdc-icon-size': 40px
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                entity_id: input_select.lighttoggle
+                option: Office
+          - entity: input_select.lighttoggle
+            name: false
+            icon: 'hass:fridge'
+            state_styles:
+              Kitchen:
+                button:
+                  background: 'rgba(255,255,255,.5)'
+                  box-shadow: '0 0 15px rgba(255,255,255,.6)'
+            style:
+              button:
+                - background: 'rgba(255,255,255,.1)'
+                - border-radius: 25px
+                - padding: 20px
+              icon:
+                - '--mdc-icon-size': 40px
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                entity_id: input_select.lighttoggle
+                option: Kitchen
+  - type: 'custom:state-switch'
+    entity: input_select.lighttoggle
+    default: Boudoir
+    transition: flip
+    states:
+      Boudoir:
+        type: 'custom:mod-card'
+        style: |
+         ha-card {
+            background: rgba(0,0,0,.3);
+            padding: 10px;
+            border-radius: 35px;
+            margin-top: none;
+            }
+        card:
+          type: grid
+          columns: 3
+          cards:
+            - type: 'custom:button-card'
+              icon: 'hass:desk-lamp'
+              aspect_ratio: 1/1
+              tap_action:
+                action: toggle
+              entity: light.desk_lamp
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              entity: light.standing_lamp
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+                      - animation: spin 2s linear infinite
+                      - background: >-
+                          radial-gradient(circle, rgba(255,198,0,1) 0%,
+                          rgba(255,255,255,1) 54%, rgba(0,0,0,1) 100%);
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              entity: group.boudoir
+              icon: 'hass:ceiling-light'
+              name: Ceiling Lights
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                  - color: white
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              entity: switch.air_purifier
+              icon: 'hass:fan'
+              aspect_ratio: 1/1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px .75em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  spin: true
+                  styles:
+                    icon:
+                      - color: 'rgb(1, 182, 253)'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+              tap_action:
+                action: toggle
+            - type: 'custom:button-card'
+              entity: light.nanoleaf
+              aspect_ratio: 1/1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+                name:
+                  - padding: 8px
+                  - font-family: Roboto
+                  - font-size: 20px
+              tap_action:
+                action: toggle
+              name: Nanos
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    icon:
+                      - color: var(--button-card-light-color)
+                    name:
+                      - color: 'rgba(0,0,0,.6)'
+                      - font-weight: bold
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              icon: 'hass:television'
+              name: TV
+              aspect_ratio: 1/1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                state:
+                  - color: 'rgba(255,255,255,1)'
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - font-family: DM Sans
+                  - background: 'rgba(255,255,255,.1'
+              tap_action:
+                action: more-info
+              entity: media_player.b_chromecast
+              show_state: true
+              state:
+                - value: playing
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    state:
+                      - animation: blink 2s ease infinite
+                      - color: 'rgb(100,100,255)'
+                    icon:
+                      - color: 'rgb(100,100,255)'
+                    name:
+                      - color: 'rgba(0,0,0,.6)'
+                      - font-weight: bold
+      Kitchen:
+        type: 'custom:mod-card'
+        style: |
+         ha-card {
+            background: rgba(0,0,0,.3);
+            padding: 10px;
+            border-radius: 35px;
+            margin-right: 10px;
+            margin-top: none;
+            }
+        card:
+          type: grid
+          columns: 3
+          cards:
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              tap_action:
+                action: toggle
+              entity: group.kitchen
+              name: All Lights
+              icon: 'hass:ceiling-light'
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              icon: 'mdi:outdoor-lamp'
+              entity: switch.hallway_lamp
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: 'rgb(255, 178, 0)'
+                      - animation: spin 2s linear infinite
+                      - background: >-
+                          radial-gradient(circle, rgba(255,198,0,1) 0%,
+                          rgba(255,255,255,1) 54%, rgba(0,0,0,1) 100%);
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                state:
+                  - color: 'rgba(255,255,255,1)'
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - font-family: DM Sans
+                  - background: 'rgba(255,255,255,.1'
+              tap_action:
+                action: more-info
+              entity: vacuum.rug_b
+              show_state: true
+              state:
+                - value: cleaning
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    state:
+                      - animation: blink 2s ease infinite
+                      - color: 'rgb(100,100,255)'
+                    icon:
+                      - color: 'rgb(100,100,255)'
+                    name:
+                      - color: 'rgba(0,0,0,.6)'
+      Bedroom:
+        type: 'custom:mod-card'
+        style: |
+         ha-card {
+            background: rgba(0,0,0,.3);
+            padding: 10px;
+            border-radius: 35px;
+            margin-right: 10px;
+            margin-top: none;
+            }
+        card:
+          type: grid
+          columns: 3
+          cards:
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              tap_action:
+                action: toggle
+              entity: switch.vine_lights
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              icon: 'mdi:floor-lamp'
+              entity: switch.lamp
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: 'rgb(255, 178, 0)'
+                      - animation: spin 2s linear infinite
+                      - background: >-
+                          radial-gradient(circle, rgba(255,198,0,1) 0%,
+                          rgba(255,255,255,1) 54%, rgba(0,0,0,1) 100%);
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              icon: 'hass:television'
+              name: TV
+              aspect_ratio: 1/1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                state:
+                  - color: 'rgba(255,255,255,1)'
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - font-family: DM Sans
+                  - background: 'rgba(255,255,255,.1'
+              tap_action:
+                action: toggle
+              entity: media_player.bedroom_tv
+              show_state: true
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    state:
+                      - animation: blink 2s ease infinite
+                      - color: 'rgb(100,100,255)'
+                    icon:
+                      - color: 'rgb(100,100,255)'
+                    name:
+                      - color: 'rgba(0,0,0,.6)'
+                      - font-weight: bold
+      Office:
+        type: 'custom:mod-card'
+        style: |
+         ha-card {
+            background: rgba(0,0,0,.3);
+            padding: 10px;
+            border-radius: 35px;
+            margin-right: 10px;
+            margin-top: none;
+            }
+        card:
+          type: grid
+          columns: 3
+          cards:
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              tap_action:
+                action: toggle
+              entity: light.office_strip
+              icon: 'hass:led-strip-variant'
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    icon:
+                      - color: var(--button-card-light-color)
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              icon: 'mdi:desk-lamp'
+              entity: light.desk_lamp_1
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: 'rgb(255, 178, 0)'
+                      - animation: spin 2s linear infinite
+                      - background: >-
+                          radial-gradient(circle, rgba(255,198,0,1) 0%,
+                          rgba(255,255,255,1) 54%, rgba(0,0,0,1) 100%);
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+            - type: 'custom:button-card'
+              aspect_ratio: 1/1
+              icon: 'mdi:desk-lamp'
+              entity: light.desk_lamp_2
+              style: |
+               ha-card:hover {
+                  transform: scale(1.05);
+                  box-shadow: 0 0 10px;
+                  }
+              styles:
+                name:
+                  - padding: 8px 1em
+                  - font-family: Roboto
+                  - font-size: 20px
+                card:
+                  - border-radius: 30px
+                  - background: 'rgba(255,255,255,.1)'
+              state:
+                - value: 'on'
+                  styles:
+                    card:
+                      - background: 'rgba(255,255,255,.8)'
+                      - border: 1px solid white
+                      - box-shadow: '0 0 10px, inset 0 0 5px'
+                    name:
+                      - font-weight: bold
+                      - color: 'rgba(0,0,0,.6)'
+                    state:
+                      - color: 'rgba(0, 0, 0, 0.6)'
+                    icon:
+                      - color: 'rgb(255, 178, 0)'
+                      - animation: spin 2s linear infinite
+                      - background: >-
+                          radial-gradient(circle, rgba(255,198,0,1) 0%,
+                          rgba(255,255,255,1) 54%, rgba(0,0,0,1) 100%);
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
